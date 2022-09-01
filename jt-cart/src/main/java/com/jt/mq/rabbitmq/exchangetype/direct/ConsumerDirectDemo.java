@@ -8,6 +8,7 @@ import java.io.IOException;
 public class ConsumerDirectDemo {
 
     public static void main(String[] args) {
+        
         Connection connection = null;
         Channel channel = null;
         String queneName = "testQuene";
