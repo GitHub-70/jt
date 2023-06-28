@@ -86,11 +86,12 @@
             <version>1.2.6</version>
         </dependency>-->
 
-        <!--spring整合mybatis-plus -->
+        <!--spring整合mybatis-plus 更高版本的 saveBatch更简化 -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.2.0</version>
+            <!--<version>3.5.1</version>-->
         </dependency>
 
         <!--springBoot整合JSP添加依赖  -->

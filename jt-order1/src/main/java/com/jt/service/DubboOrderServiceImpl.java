@@ -2,6 +2,8 @@ package com.jt.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jt.mapper.OrderItemMapper;
 import com.jt.mapper.OrderMapper;
 import com.jt.pojo.Order;
@@ -11,10 +13,11 @@ import com.jt.mapper.OrderShippingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service(timeout = 3000)
-public class DubboOrderServiceImpl implements DubboOrderService {
+public class DubboOrderServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem> implements DubboOrderService {
 
     @Autowired
     private OrderMapper orderMapper;
@@ -49,10 +52,12 @@ public class DubboOrderServiceImpl implements DubboOrderService {
         //4.完成订单商品入库
         List<OrderItem> orderItems = order.getOrderItems();
         //批量入库  sql: insert into xxx(xxx,xx,xx)values (xx,xx,xx),(xx,xx,xx)....
-        for (OrderItem orderItem : orderItems){
-            orderItem.setOrderId(orderId);
-            orderItemMapper.insert(orderItem);
-        }
+//        for (OrderItem orderItem : orderItems){
+//            orderItem.setOrderId(orderId);
+//            orderItemMapper.insert(orderItem);
+//        }
+        // mybatisplus 批量插入 底层是一个sqlsession 拼接sql的形式提交
+        this.saveBatch(orderItems,2000);
         System.out.println("订单入库成功!!!!");
         return orderId;
     }
@@ -77,4 +82,5 @@ public class DubboOrderServiceImpl implements DubboOrderService {
         order.setOrderShipping(orderShipping);
         return order;
     }
+
 }
